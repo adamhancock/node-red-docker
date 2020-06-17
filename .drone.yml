@@ -19,6 +19,18 @@ steps:
       - cd docker-custom
       - docker buildx create --use --name build --node build --driver-opt network=host
       - docker buildx build . -f Dockerfile.custom -t $DOCKER_USER/node-red --push --platform linux/amd64
+
+  - name: deliver
+    image: adamhancock/drone-kubectl
+    settings:
+      kubernetes_server:
+        from_secret: DEV_K8S_HOST
+      kubernetes_cert:
+        from_secret: DEV_K8S_CERT
+      kubernetes_token:
+        from_secret: DEV_K8S_TOKEN
+    commands:
+      - kubectl rollout restart deploy node-red -n node-red
       # - docker push $DOCKER_USER/node-red
 volumes:
   - name: dockersock
