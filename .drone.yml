@@ -16,7 +16,7 @@ steps:
     commands:
       - sleep 5 #
       - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - cd docker-custom && docker buildx . -f Dockerfile.custom -t $DOCKER_USER/drone-kubectl --push
+      - cd docker-custom && docker buildx build . -f Dockerfile.custom -t $DOCKER_USER/drone-kubectl --push
       # - docker push $DOCKER_USER/node-red
 volumes:
   - name: dockersock
