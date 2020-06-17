@@ -1,0 +1,24 @@
+kind: pipeline
+type: kubernetes
+name: default
+
+steps:
+  - name: build-push
+    image: adamhancock/dind
+    volumes:
+      - name: dockersock
+        path: /run
+    environment:
+      DOCKER_USER:
+        from_secret: DOCKER_USER
+      DOCKER_PASSWORD:
+        from_secret: DOCKER_PASSWORD
+    commands:
+      - sleep 5 #
+      - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - cd docker-custom && docker buildx . -f Dockerfile.custom -t $DOCKER_USER/drone-kubectl --push
+      # - docker push $DOCKER_USER/node-red
+volumes:
+  - name: dockersock
+    host:
+      path: /run
