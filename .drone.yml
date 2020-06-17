@@ -17,6 +17,7 @@ steps:
       - sleep 5 #
       - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - cd docker-custom
+      - docker buildx create --use --name build --node build --driver-opt network=host
       - docker buildx build . -f Dockerfile.custom -t $DOCKER_USER/drone-kubectl --push
       # - docker push $DOCKER_USER/node-red
 volumes:
