@@ -18,7 +18,7 @@ steps:
       - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - cd docker-custom
       - docker buildx create --use --name build --node build --driver-opt network=host
-      - docker buildx build . -f Dockerfile.custom -t $DOCKER_USER/node-red --push
+      - docker buildx build . -f Dockerfile.custom -t $DOCKER_USER/node-red --push --platform linux/amd64,linux/arm
       # - docker push $DOCKER_USER/node-red
 volumes:
   - name: dockersock
