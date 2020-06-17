@@ -37,7 +37,7 @@ COPY package.json .
 FROM base AS build
 
 # Install Build tools
-RUN apk add --no-cache --virtual buildtools build-base linux-headers udev python && \
+RUN apk add --no-cache --virtual buildtools build-base linux-headers udev python chromium && \
   npm install --unsafe-perm --no-update-notifier --only=production && \
   /tmp/remove_native_gpio.sh && \
   cp -R node_modules prod_node_modules
@@ -80,6 +80,8 @@ ENV NODE_RED_VERSION=$NODE_RED_VERSION \
 
 # ENV NODE_RED_ENABLE_SAFE_MODE=true    # Uncomment to enable safe start mode (flows not running)
 ENV NODE_RED_ENABLE_PROJECTS=true
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+ENV CHROMIUM_PATH /usr/bin/chromium-browser
 # User configuration directory volume
 VOLUME ["/data"]
 
